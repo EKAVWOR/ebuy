@@ -1,14 +1,12 @@
-// src/pages/vendor/Store.jsx
-
-import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import storeService from '../../services/storeService';
-import uploadService from '../../services/uploadServices';
-import Alert from '../../components/common/Alert';
-import Loader from '../../components/common/Loader';
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import storeService from "../../services/storeService";
+import Alert from "../../components/common/Alert";
+import Loader from "../../components/common/Loader";
 
 const Store = () => {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm();
+
   const [store, setStore] = useState(null);
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState(null);
@@ -16,23 +14,49 @@ const Store = () => {
 
   useEffect(() => {
     fetchStore();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchStore = async () => {
     try {
       setLoading(true);
-      const response = await storeService.getMyStore();
-      const storeData = response.data.store;
+      setAlert(null);
+
+      const response = await storeService.getMyStore(); // JSON body
+      const storeData = response?.data?.store ?? null;
+
       setStore(storeData);
 
-      // Set form values
-      setValue('storeName', storeData.storeName);
-      setValue('description', storeData.description);
-      setValue('category', storeData.category);
-      setValue('contactEmail', storeData.contactEmail);
-      setValue('contactPhone', storeData.contactPhone);
+      if (storeData) {
+        setValue("storeName", storeData.storeName || "");
+        setValue("description", storeData.description || "");
+        setValue("category", storeData.category || "");
+        setValue("contactEmail", storeData.contactEmail || "");
+        setValue("contactPhone", storeData.contactPhone || "");
+      } else {
+        // no store yet -> clear form
+        reset({
+          storeName: "",
+          description: "",
+          category: "",
+          contactEmail: "",
+          contactPhone: "",
+        });
+      }
     } catch (error) {
-      console.error('Error:', error);
+      // If backend still returns 404, treat it as "no store yet"
+      if (error.status === 404 || String(error.message).toLowerCase().includes("store not found")) {
+        setStore(null);
+        reset({
+          storeName: "",
+          description: "",
+          category: "",
+          contactEmail: "",
+          contactPhone: "",
+        });
+      } else {
+        setAlert({ type: "error", message: error.message || "Failed to load store" });
+      }
     } finally {
       setLoading(false);
     }
@@ -41,54 +65,61 @@ const Store = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
+      setAlert(null);
+
       if (store) {
         await storeService.updateStore(store._id, data);
-        setAlert({ type: 'success', message: 'Store updated successfully' });
+        setAlert({ type: "success", message: "Store updated successfully" });
       } else {
         await storeService.createStore(data);
-        setAlert({ type: 'success', message: 'Store created successfully' });
+        setAlert({ type: "success", message: "Store created successfully" });
       }
-      fetchStore();
+
+      await fetchStore();
     } catch (error) {
-      setAlert({ type: 'error', message: error.message });
+      setAlert({ type: "error", message: error.message || "Action failed" });
     } finally {
       setLoading(false);
     }
   };
 
   const handleLogoUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const file = e.target.files?.[0];
+    if (!file || !store?._id) return;
 
     try {
       setUploading(true);
       const formData = new FormData();
-      formData.append('logo', file);
+      formData.append("logo", file);
+
       await storeService.uploadLogo(store._id, formData);
-      setAlert({ type: 'success', message: 'Logo uploaded' });
-      fetchStore();
+      setAlert({ type: "success", message: "Logo uploaded" });
+      await fetchStore();
     } catch (error) {
-      setAlert({ type: 'error', message: error.message });
+      setAlert({ type: "error", message: error.message || "Logo upload failed" });
     } finally {
       setUploading(false);
+      e.target.value = "";
     }
   };
 
   const handleBannerUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const file = e.target.files?.[0];
+    if (!file || !store?._id) return;
 
     try {
       setUploading(true);
       const formData = new FormData();
-      formData.append('banner', file);
+      formData.append("banner", file);
+
       await storeService.uploadBanner(store._id, formData);
-      setAlert({ type: 'success', message: 'Banner uploaded' });
-      fetchStore();
+      setAlert({ type: "success", message: "Banner uploaded" });
+      await fetchStore();
     } catch (error) {
-      setAlert({ type: 'error', message: error.message });
+      setAlert({ type: "error", message: error.message || "Banner upload failed" });
     } finally {
       setUploading(false);
+      e.target.value = "";
     }
   };
 
@@ -100,11 +131,14 @@ const Store = () => {
 
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-800">My Store</h2>
+
         {store && (
-          <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
-            store.isApproved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-          }`}>
-            {store.isApproved ? 'Approved' : 'Pending Approval'}
+          <span
+            className={`px-4 py-2 rounded-full text-sm font-semibold ${
+              store.isApproved ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+            }`}
+          >
+            {store.isApproved ? "Approved" : "Pending Approval"}
           </span>
         )}
       </div>
@@ -118,16 +152,8 @@ const Store = () => {
               <img src={store.banner} alt="Banner" className="w-full h-full object-cover" />
             )}
             <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-              <span className="text-white font-semibold">
-                {uploading ? 'Uploading...' : 'Change Banner'}
-              </span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleBannerUpload}
-                className="hidden"
-                disabled={uploading}
-              />
+              <span className="text-white font-semibold">{uploading ? "Uploading..." : "Change Banner"}</span>
+              <input type="file" accept="image/*" onChange={handleBannerUpload} className="hidden" disabled={uploading} />
             </label>
           </div>
 
@@ -139,20 +165,12 @@ const Store = () => {
                   <img src={store.logo} alt="Logo" className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full bg-indigo-100 flex items-center justify-center text-4xl font-bold text-indigo-600">
-                    {store.storeName.charAt(0)}
+                    {store.storeName?.charAt(0) || "S"}
                   </div>
                 )}
                 <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                  <span className="text-white text-sm">
-                    {uploading ? 'Uploading...' : 'Change'}
-                  </span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLogoUpload}
-                    className="hidden"
-                    disabled={uploading}
-                  />
+                  <span className="text-white text-sm">{uploading ? "Uploading..." : "Change"}</span>
+                  <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" disabled={uploading} />
                 </label>
               </div>
             </div>
@@ -172,7 +190,7 @@ const Store = () => {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Store Name *</label>
               <input
-                {...register('storeName', { required: 'Store name is required' })}
+                {...register("storeName", { required: "Store name is required" })}
                 disabled={store?.isApproved}
                 className="w-full px-3 py-2 border rounded-md disabled:bg-gray-100"
               />
@@ -181,10 +199,7 @@ const Store = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
-              <select
-                {...register('category', { required: 'Category is required' })}
-                className="w-full px-3 py-2 border rounded-md"
-              >
+              <select {...register("category", { required: "Category is required" })} className="w-full px-3 py-2 border rounded-md">
                 <option value="">Select Category</option>
                 <option value="Fashion">Fashion</option>
                 <option value="Electronics">Electronics</option>
@@ -198,46 +213,30 @@ const Store = () => {
 
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
-              <textarea
-                {...register('description', { required: 'Description is required' })}
-                rows="4"
-                className="w-full px-3 py-2 border rounded-md"
-              />
+              <textarea {...register("description", { required: "Description is required" })} rows="4" className="w-full px-3 py-2 border rounded-md" />
               {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
-              <input
-                type="email"
-                {...register('contactEmail')}
-                className="w-full px-3 py-2 border rounded-md"
-              />
+              <input type="email" {...register("contactEmail")} className="w-full px-3 py-2 border rounded-md" />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Contact Phone</label>
-              <input
-                {...register('contactPhone')}
-                className="w-full px-3 py-2 border rounded-md"
-              />
+              <input {...register("contactPhone")} className="w-full px-3 py-2 border rounded-md" />
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700"
-          >
-            {store ? 'Update Store' : 'Create Store'}
+          <button type="submit" className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700">
+            {store ? "Update Store" : "Create Store"}
           </button>
         </form>
       </div>
 
       {store && !store.isApproved && (
         <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md">
-          <p className="text-yellow-800">
-            Your store is pending approval by SUG. You'll be notified once approved.
-          </p>
+          <p className="text-yellow-800">Your store is pending approval by SUG. You'll be notified once approved.</p>
         </div>
       )}
     </div>

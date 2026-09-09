@@ -34,7 +34,7 @@ const StudentLayout = () => {
   ];
 
   return (
-    <DashboardLayout menuItems={menuItems} title="Student Portal">
+    <DashboardLayout menuItems={menuItems} title="Student Dashboard">
       <Outlet />
     </DashboardLayout>
   );

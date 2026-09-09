@@ -1,28 +1,11 @@
 // tailwind.config.js
 
-// /** @type {import('tailwindcss').Config} */
-// export default {
-//   content: [
-//     "./index.html",
-//     "./src/**/*.{js,ts,jsx,tsx}",
-//   ],
-//   theme: {
-//     extend: {
-//       colors: {
-//         primary: '#4F46E5',
-//       }
-//     },
-//   },
-//   plugins: [],
-// }
-
-// tailwind.config.js
-
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class', // ← ADD THIS LINE
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",  // ✅ This is critical
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},

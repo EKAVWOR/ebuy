@@ -40,7 +40,7 @@ const AdminLayout = () => {
   ];
 
   return (
-    <DashboardLayout menuItems={menuItems} title="Admin Portal">
+    <DashboardLayout menuItems={menuItems} title="Admin Dashboard">
       <Outlet />
     </DashboardLayout>
   );

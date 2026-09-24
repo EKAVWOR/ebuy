@@ -116,7 +116,7 @@ const Register = () => {
               e
             </div>
             <div className="leading-tight">
-              <span className="block text-lg font-semibold">eBuy</span>
+              <span className="block text-lg font-semibold">ECampusmart</span>
               <span className="block text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
                 Campus marketplace
               </span>
@@ -124,7 +124,7 @@ const Register = () => {
           </Link>
 
           <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight">
-            Create your eBuy account.
+            Create your ECampusmart account.
           </h1>
           <p className="mt-3 text-sm text-slate-300 max-w-md">
             Join a trusted marketplace built for students. Buy, sell, and manage
@@ -179,7 +179,7 @@ const Register = () => {
                 Create account
               </h2>
               <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                Join eBuy in a few quick steps.
+                Join ECampusmart in a few quick steps.
               </p>
             </div>
 
@@ -379,7 +379,7 @@ const Register = () => {
 
           {/* Mobile brand footer */}
           <div className="mt-6 text-center text-xs text-slate-400 md:hidden">
-            <span>eBuy • Campus marketplace</span>
+            <span>ECampusmart • Campus marketplace</span>
           </div>
         </div>
       </div>

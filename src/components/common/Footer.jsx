@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div>
-            <h3 className="text-lg font-bold mb-4">eBuy</h3>
+            <h3 className="text-lg font-bold mb-4">ECampusmart</h3>
             <p className="text-gray-400 text-sm">
               Your trusted student marketplace for buying and selling products on campus.
             </p>
@@ -41,7 +41,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-4">Contact</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
-              <li>Email: support@ebuy.com</li>
+              <li>Email: support@ECampusmart.com</li>
               <li>Phone: +234 800 000 0000</li>
               <li>Address: University Campus</li>
             </ul>
@@ -50,7 +50,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} eBuy. All rights reserved.
+            © {new Date().getFullYear()} ECampusmart. All rights reserved.
           </p>
         </div>
       </div>

@@ -1,5 +1,5 @@
 {
-  "name": "ebuy-frontend",
+  "name": "ECampusmart-frontend",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -11,6 +11,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.2",
+    "framer-motion": "^13.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",

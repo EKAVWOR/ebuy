@@ -130,7 +130,7 @@ const Login = () => {
               e
             </div>
             <div className="leading-tight">
-              <span className="block text-lg font-semibold">eBuy</span>
+              <span className="block text-lg font-semibold">ECampusmart</span>
               <span className="block text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
                 Campus marketplace
               </span>
@@ -190,7 +190,7 @@ const Login = () => {
           <div className="mx-auto max-w-md rounded-2xl bg-white px-6 py-7 shadow-xl shadow-slate-900/25 border border-slate-200 sm:px-8 dark:bg-slate-950 dark:border-slate-800">
             <div className="text-center mb-6 md:mb-7">
               <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
-                Sign in to eBuy
+                Sign in to ECampusmart
               </h2>
               <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Enter your details to continue.
@@ -360,7 +360,7 @@ const Login = () => {
 
           {/* Mobile brand under card */}
           <div className="mt-6 text-center text-xs text-slate-400 md:hidden">
-            <span>eBuy • Campus marketplace</span>
+            <span>ECampusmart • Campus marketplace</span>
           </div>
         </div>
       </div>

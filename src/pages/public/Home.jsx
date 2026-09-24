@@ -172,7 +172,7 @@ const TESTIMONIALS = [
     name: 'Sarah Johnson',
     role: 'Computer Science student',
     image: 'https://randomuser.me/api/portraits/women/1.jpg',
-    text: 'eBuy made selling my old textbooks so easy. I love how secure and fast the platform is.',
+    text: 'ECampusmart made selling my old textbooks so easy. I love how secure and fast the platform is.',
     rating: 5,
   },
   {
@@ -452,7 +452,7 @@ const HeroSection = ({ currentSlide, onPrev, onNext, onDotClick }) => (
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-50">
             Welcome to{' '}
             <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-amber-300 bg-clip-text text-transparent">
-              eBuy
+              ECampusmart
             </span>
             <span className="block mt-3 text-slate-200/95">
               The campus marketplace that actually feels modern.
@@ -640,7 +640,7 @@ const FeaturesSection = () => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader
         title="Why students choose"
-        highlight="eBuy"
+        highlight="ECampusmart"
         subtitle="Everything you need to buy and sell safely on your campus."
       />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -776,7 +776,7 @@ const TestimonialsSection = () => (
       <SectionHeader
         title="What students"
         highlight="say"
-        subtitle="Real feedback from students using eBuy every day."
+        subtitle="Real feedback from students using ECampusmart every day."
       />
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
         {TESTIMONIALS.map((t, i) => (

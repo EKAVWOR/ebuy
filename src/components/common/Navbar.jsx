@@ -62,7 +62,7 @@ const Navbar = () => {
               </div>
               <div className="leading-tight">
                 <span className="block text-lg font-semibold text-slate-900 dark:text-slate-50">
-                  eBuy
+                  ECampusmart
                 </span>
                 <span className="block text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400">
                   Campus marketplace
